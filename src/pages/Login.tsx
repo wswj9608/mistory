@@ -19,7 +19,7 @@ const Login = () => {
     userPhone: '',
   })
 
-  const { userId, password, userName, userEmail, userPhone } = inputs
+  // const { userId, password, userName, userEmail, userPhone } = inputs
 
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target
