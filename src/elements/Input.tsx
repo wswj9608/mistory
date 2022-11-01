@@ -7,9 +7,10 @@ const Input = ({ sx, type = 'text', ...rest }: InputProps) => {
 
 const BasicInput = styled.input`
   width: 100%;
-  height: 50px;
+  height: 40px;
   border: 1px solid #bebebe;
-  border-radius: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
 `
 
 export default Input

@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { joinUser, loginToAxios } from '../lib/api/user'
+import { joinUser } from '../lib/api/user'
 import { Button, Input, Text } from '../elements'
-import { useMemberInfoInRecoil } from '../atoms/member'
 
-const Login = () => {
-  const [, setMemberInfo] = useMemberInfoInRecoil()
-  const [inputs, setInputs] = useState<LoginInputType>({
+const Join = () => {
+  const [inputs, setInputs] = useState<JoinUserDataType>({
     userId: '',
     password: '',
+    userName: '',
+    userEmail: '',
+    userPhone: '',
   })
 
   // const { userId, password, userName, userEmail, userPhone } = inputs
@@ -27,17 +28,27 @@ const Login = () => {
       title: 'PW',
       id: 'password',
     },
+    {
+      title: '이름',
+      id: 'userName',
+    },
+    {
+      title: 'H.P',
+      id: 'userPhone',
+    },
+    {
+      title: '이메일',
+      id: 'userEmail',
+    },
   ]
 
-  const login = async () => {
-    const res = await loginToAxios(inputs)
-    setMemberInfo(res)
-
+  const setJoin = async () => {
+    const res = await joinUser(inputs)
     console.log(res)
   }
 
   return (
-    <LoginWrapper>
+    <JoinWrapper>
       <Text className="logo" size="56px" weight="bold">
         Mistory
       </Text>
@@ -48,23 +59,21 @@ const Login = () => {
             <Input id={el.id} type={el.id === 'password' ? 'password' : 'text'} onChange={handleInputs} />
           </div>
         ))}
-        <Button className="login-button" type="A" onClick={login}>
-          로그인
+        <Button className="join-button" type="A" onClick={setJoin}>
+          회원 가입
         </Button>
-        <Text className="join" color="#555555">
-          비밀번호 찾기 <span>|</span> 회원가입
-        </Text>
       </div>
-    </LoginWrapper>
+    </JoinWrapper>
   )
 }
 
-const LoginWrapper = styled.div`
+const JoinWrapper = styled.div`
   height: 100%;
+  padding-top: 120px;
   text-align: center;
-  padding-top: 260px;
 
   .inputs {
+    text-align: start;
     width: fit-content;
     margin: 60px auto 0;
 
@@ -76,7 +85,7 @@ const LoginWrapper = styled.div`
       position: relative;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       margin-bottom: 32px;
 
       &:last-child {
@@ -85,23 +94,15 @@ const LoginWrapper = styled.div`
 
       p {
         position: absolute;
-        left: -44px;
-        width: 28px;
+        left: -66px;
+        width: 50px;
       }
     }
   }
 
-  .login-button {
+  .join-button {
     width: 280px;
-  }
-
-  .join {
-    margin-top: 20px;
-    span {
-      color: #dddddd;
-      margin: 0px 20px;
-    }
   }
 `
 
-export default Login
+export default Join

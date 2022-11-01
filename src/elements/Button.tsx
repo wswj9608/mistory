@@ -1,17 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Button = ({ sx, type, color = '#4171d6', fontColor = '#FFF', children, ...rest }: ButtonProps) => {
+const Button = ({ type, color = '#4171d6', fontColor = '#FFF', children, ...rest }: ButtonProps) => {
   if (type === 'A') {
     return (
-      <ButtonA style={{ ...sx }} color={color} fontColor={fontColor} {...rest}>
+      <ButtonA color={color} fontColor={fontColor} {...rest}>
         {children}
       </ButtonA>
     )
   }
 
   return (
-    <ButtonB style={{ ...sx }} color={color} fontColor={fontColor} {...rest}>
+    <ButtonB color={color} fontColor={fontColor} {...rest}>
       {children}
     </ButtonB>
   )
