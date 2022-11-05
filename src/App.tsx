@@ -5,10 +5,12 @@ import Login from './pages/Login'
 import Landing from './pages/Landing'
 import Join from './pages/Join'
 import MyPage from './pages/MyPage'
+import Header from './components/Layout/Header'
 
 const App = () => {
   return (
     <AppWrapper>
+      <Header />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
