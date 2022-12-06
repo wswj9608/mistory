@@ -2,15 +2,23 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text } from '../../elements'
 
-const StoryCard = () => {
+const DiaryCard = ({ diary }: DiaryCardProps) => {
+  const { createdAt, contents } = diary
+
+  const dateToStringArray = new Date(createdAt).toString().split(' ')
+  const week = dateToStringArray[0]
+  const day = dateToStringArray[2]
+
+  console.log()
+
   return (
     <CradWrapper>
       <div>
-        <Text size="22px">12</Text>
-        <Text size="18px">Wed</Text>
+        <Text size="22px">{day}</Text>
+        <Text size="18px">{week}</Text>
       </div>
       <div>
-        <Text>오늘은 날씨가 좋아서 그런지 하루종일 기분이 좋았다.</Text>
+        <Text>{contents}</Text>
       </div>
     </CradWrapper>
   )
@@ -26,4 +34,4 @@ const CradWrapper = styled.div`
   display: flex;
 `
 
-export default StoryCard
+export default DiaryCard

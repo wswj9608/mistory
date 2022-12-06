@@ -8,7 +8,7 @@ const client: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
 })
 
-export const admin: AxiosInstance = axios.create({
+export const privateClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
 })
 
@@ -17,6 +17,19 @@ client.interceptors.request.use((req: any) => {
 
   if (!config?.headers) {
     return
+  }
+
+  return config
+})
+
+privateClient.interceptors.request.use((req: any) => {
+  const config = req
+  const loginToken = window.localStorage.getItem('loginToken')
+
+  if (!config.headers) return
+
+  if (loginToken) {
+    config.headers.Authorization = `Bearer ${loginToken}`
   }
 
   return config

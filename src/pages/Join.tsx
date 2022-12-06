@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { AxiosError } from 'axios'
 import { joinUser } from '../lib/api/user'
 import { Button, Input, Text } from '../elements'
+import { getErrorMessage } from '../utils'
 
 const Join = () => {
+  const navigator = useNavigate()
   const [inputs, setInputs] = useState<JoinUserDataType>({
     userId: '',
     password: '',
@@ -42,9 +46,21 @@ const Join = () => {
     },
   ]
 
+  interface Data {
+    message: string
+  }
+
   const setJoin = async () => {
-    const res = await joinUser(inputs)
-    console.log(res)
+    try {
+      await joinUser(inputs)
+      window.alert('회원가입이 완료 되었습니다.')
+      navigator('/login')
+    } catch (err) {
+      const errorMessage = getErrorMessage(err)
+
+      window.alert(errorMessage)
+      console.error(err)
+    }
   }
 
   return (

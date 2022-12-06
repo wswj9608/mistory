@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Link, useNavigate } from 'react-router-dom'
 import { joinUser, loginToAxios } from '../lib/api/user'
 import { Button, Input, Text } from '../elements'
 import { useMemberInfoInRecoil } from '../atoms/member'
+import { getErrorMessage } from '../utils'
 
 const Login = () => {
+  const navigator = useNavigate()
   const [, setMemberInfo] = useMemberInfoInRecoil()
   const [inputs, setInputs] = useState<LoginInputType>({
     userId: '',
@@ -30,10 +33,16 @@ const Login = () => {
   ]
 
   const login = async () => {
-    const res = await loginToAxios(inputs)
-    setMemberInfo(res)
+    try {
+      const { token, userName, userId, userEmail, userPhone } = await loginToAxios(inputs)
+      window.localStorage.setItem('loginToken', token)
 
-    console.log(res)
+      setMemberInfo({ userId, userName, userEmail, userPhone })
+      navigator('/')
+    } catch (err) {
+      const errorMessage = getErrorMessage(err)
+      alert(errorMessage)
+    }
   }
 
   return (
@@ -41,9 +50,9 @@ const Login = () => {
       <Text className="logo" size="56px" weight="bold">
         Mistory
       </Text>
-      <div className="inputs">
+      <div className="inputs-wrap">
         {inputOptions.map(el => (
-          <div key={el.id}>
+          <div key={el.id} className="inputs">
             <Text size="18px">{el.title}</Text>
             <Input id={el.id} type={el.id === 'password' ? 'password' : 'text'} onChange={handleInputs} />
           </div>
@@ -51,9 +60,11 @@ const Login = () => {
         <Button className="login-button" type="A" onClick={login}>
           로그인
         </Button>
-        <Text className="join" color="#555555">
-          비밀번호 찾기 <span>|</span> 회원가입
-        </Text>
+        <Link to="/join">
+          <Text className="join" color="#555555">
+            회원가입
+          </Text>
+        </Link>
       </div>
     </LoginWrapper>
   )
@@ -64,30 +75,33 @@ const LoginWrapper = styled.div`
   text-align: center;
   padding-top: 260px;
 
-  .inputs {
+  .inputs-wrap {
     width: fit-content;
     margin: 60px auto 0;
+  }
+
+  .inputs {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+
+    p {
+      position: absolute;
+      left: -44px;
+      width: 28px;
+    }
 
     input {
       width: 280px;
     }
 
     div {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-
-      &:last-child {
-        margin-bottom: 0px;
-      }
-
-      p {
-        position: absolute;
-        left: -44px;
-        width: 28px;
-      }
     }
   }
 
@@ -97,10 +111,6 @@ const LoginWrapper = styled.div`
 
   .join {
     margin-top: 20px;
-    span {
-      color: #dddddd;
-      margin: 0px 20px;
-    }
   }
 `
 
